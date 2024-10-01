@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:shop/app/modules/home/data/models/product.dart';
 import 'package:shop/app/server/api_base_helper.dart';
@@ -16,23 +14,8 @@ class CartRepository {
   })  : _urlBuilder = urlBuilder,
         _apiBaseHelper = apiBaseHelper;
 
-  Future<Either<AppException, List<Product>>> fetchCartProducts(
-    List<int> ids,
-  ) async {
-    List<Product> products = [];
-    for (int id in ids) {
-      final productOrError = await fetchProduct(_urlBuilder.product(id));
-      productOrError.fold((error) {
-        log("message");
-        return Left(error);
-      }, (product) {
-        products.add(product);
-      });
-    }
-    return Right(products);
-  }
-
-  Future<Either<AppException, Product>> fetchProduct(Uri url) async {
+  Future<Either<AppException, Product>> fetchProduct(int id) async {
+    Uri url = _urlBuilder.product(id);
     try {
       final response = await _apiBaseHelper.request(url);
       return Right(Product.fromJson(response));

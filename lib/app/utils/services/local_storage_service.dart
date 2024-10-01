@@ -6,11 +6,16 @@ import 'package:get_storage/get_storage.dart';
 class LocalStorageService extends GetxService {
   late GetStorage _storage;
 
-  Future<LocalStorageService> initStorage() async {
+  @override
+  void onInit() async {
     await GetStorage.init();
     _storage = GetStorage();
-    return this;
+    super.onInit();
   }
+
+  // Future<LocalStorageService> initStorage() async {
+  //   return this;
+  // }
 
   Future<void> write<T>({required String key, required T data}) async {
     return await _storage.write(key, data);

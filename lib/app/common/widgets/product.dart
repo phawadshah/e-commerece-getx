@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:shop/app/common/widgets/image.dart';
 
 import 'package:shop/app/modules/home/data/models/product.dart';
 import 'package:shop/app/utils/helper.dart';
 
 class KProductCard extends StatelessWidget {
-  KProductCard({
+  const KProductCard({
     super.key,
     required this.product,
     this.onTap,

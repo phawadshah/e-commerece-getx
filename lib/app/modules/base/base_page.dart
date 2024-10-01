@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import 'base_controller.dart';
+import 'widgets/navigation_widget.dart';
 
 class BasePage extends GetView<BaseController> {
   const BasePage({super.key});
@@ -10,7 +12,28 @@ class BasePage extends GetView<BaseController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Obx(
+      body: PersistentTabView.custom(
+        context,
+        hideNavigationBarWhenKeyboardAppears: false,
+        resizeToAvoidBottomInset: false,
+        itemCount: 5,
+        controller: controller.tabController,
+        screens: controller.navBarScreens,
+        customWidget: Obx(
+          () => NavigationBarWigdet(
+            cartCount: controller.cartCount.value,
+            currentIndex: controller.currentIndex,
+            onTap: controller.changeTab,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+/* 
+  Obx(
         () => IndexedStack(
           index: controller.currentIndex,
           children: controller.pages,
@@ -52,9 +75,12 @@ class BasePage extends GetView<BaseController> {
                   : const Icon(Icons.shopping_cart),
               label: 'Cart',
             ),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
           ],
         ),
       ),
-    );
-  }
-}
+    
+*/

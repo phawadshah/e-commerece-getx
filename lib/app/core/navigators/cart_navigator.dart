@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:shop/app/modules/cart/presentation/cart_bindings.dart';
 import 'package:shop/app/modules/cart/presentation/cart_page.dart';
 
 import '../../utils/pages/app_pages.dart';
 
-class CartNavigator extends StatelessWidget {
+class CartNavigator extends StatelessWidget implements CustomNavBarScreen {
   final GlobalKey<NavigatorState>? _navigatorKey;
   const CartNavigator(
       {super.key, required GlobalKey<NavigatorState>? navigatorKey})
@@ -13,12 +14,19 @@ class CartNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      key: _navigatorKey,
-      initialRoute: Routes.CART,
-      onGenerateRoute: _onGenerateRoute,
-    );
+    return screen;
   }
+
+  @override
+  RouteAndNavigatorSettings? get routeAndNavigatorSettings =>
+      RouteAndNavigatorSettings(
+        navigatorKey: _navigatorKey,
+        initialRoute: Routes.CART,
+        onGenerateRoute: _onGenerateRoute,
+      );
+
+  @override
+  Widget get screen => const CartPage();
 }
 
 Route? _onGenerateRoute(RouteSettings settings) {

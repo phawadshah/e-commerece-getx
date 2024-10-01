@@ -1,44 +1,66 @@
-class AppException {
-  final String message;
+import '../../utils/constants/error_texts.dart';
+
+class AppException implements Exception {
+  final String? message;
+
   AppException(this.message);
+
   @override
   String toString() {
-    return message;
+    return "$message";
   }
 }
 
 class FetchDataException extends AppException {
-  FetchDataException(super.message);
+  FetchDataException(
+      [String super.message = ErrorTexts.errorDuringCommunication]);
 }
 
 class BadRequestException extends AppException {
-  BadRequestException(super.message);
+  BadRequestException([String super.message = ErrorTexts.invalidRequest]);
 }
 
 class UnauthorisedException extends AppException {
-  UnauthorisedException(super.message);
+  UnauthorisedException([String super.message = ErrorTexts.unauthorised]);
 }
 
 class InvalidInputException extends AppException {
-  InvalidInputException(super.message);
+  InvalidInputException([String super.message = ErrorTexts.invalidInput]);
 }
 
-class ServerException extends AppException {
-  ServerException(super.message);
+class InvalidCredentialsException extends AppException {
+  InvalidCredentialsException(
+      [String super.message = ErrorTexts.invalidCredentials]);
 }
 
-class ClientException extends AppException {
-  ClientException(super.message);
+class NoInternetConnectionException extends AppException {
+  NoInternetConnectionException(
+      [String super.message = ErrorTexts.noInternetConnection]);
 }
 
-class UnknownException extends AppException {
-  UnknownException(super.message);
+class ResourceNotFoundException extends AppException {
+  ResourceNotFoundException(
+      [String super.message = ErrorTexts.resourceNotFound]);
 }
 
-class NotFoundException extends AppException {
-  NotFoundException(super.message);
+class TimeoutException extends AppException {
+  TimeoutException([String super.message = ErrorTexts.timeout]);
+}
+
+class SomethingWentWrongException extends AppException {
+  SomethingWentWrongException(
+      [String super.message = ErrorTexts.somethingWentWrong]);
+}
+
+class NoPermissionException extends AppException {
+  NoPermissionException([String super.message = ErrorTexts.noPermission]);
 }
 
 class ApiConnectionException extends AppException {
-  ApiConnectionException(super.message);
+  ApiConnectionException(
+      [String super.message = ErrorTexts.apiConnectionError]);
+}
+
+class InvalidResponseException extends AppException {
+  InvalidResponseException([String super.message = ErrorTexts.invalidResponse]);
 }

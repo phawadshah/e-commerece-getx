@@ -16,17 +16,24 @@ class SearchRepository {
 
   Future<Either<AppException, List<Product>>> searchProducts(
       String query) async {
-    Uri url = _urlBuilder.searchProducts(query);
     try {
+      Uri url = _urlBuilder.searchProducts(query);
       final response = await _apiBaseHelper.request(url);
       return Right((response["products"] as List<dynamic>)
           .map((product) => Product.fromJson(product))
           .toList());
     } catch (e) {
-      if (e is AppException) {
-        return Left(e);
-      }
-      return Left(AppException(e.toString()));
+      return Left(e is AppException ? e : AppException(e.toString()));
+    }
+  }
+
+  Future<Either<AppException, Product>> fetchProduct(int id) async {
+    try {
+      Uri url = _urlBuilder.product(id);
+      final response = await _apiBaseHelper.request(url);
+      return Right(Product.fromJson(response));
+    } catch (e) {
+      return Left(e is AppException ? e : AppException(e.toString()));
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shop/app/common/widgets/empty.dart';
 import 'package:shop/app/common/widgets/product.dart';
 import 'package:shop/app/modules/home/data/models/product.dart';
@@ -10,11 +11,11 @@ class AllProducts extends StatelessWidget {
     required this.products,
     this.onTap,
     this.onFavTap,
-    this.wislist,
+    required this.wislist,
   });
 
   final List<Product> products;
-  final List<int>? wislist;
+  final RxList<int> wislist;
   final Function(Product)? onTap;
   final Function(Product)? onFavTap;
 
@@ -48,17 +49,19 @@ class AllProducts extends StatelessWidget {
                 ),
                 itemBuilder: (_, index) {
                   final product = products[index];
-                  product.isFav = wislist!.any((w) => w == product.id);
 
-                  return KProductCard(
-                    aspectRatio: 1,
-                    product: product,
-                    onTap: () {
-                      onTap?.call(product);
-                    },
-                    onIconTap: () {
-                      onFavTap?.call(product);
-                    },
+                  return Obx(
+                    () => KProductCard(
+                      aspectRatio: 1,
+                      product: Product.copyWith(product,
+                          isFav: wislist.any((w) => w == product.id)),
+                      onTap: () {
+                        onTap?.call(product);
+                      },
+                      onIconTap: () {
+                        onFavTap?.call(product);
+                      },
+                    ),
                   );
                 },
               ),

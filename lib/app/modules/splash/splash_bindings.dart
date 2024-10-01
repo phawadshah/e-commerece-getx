@@ -7,7 +7,7 @@ class SplashBindings extends Bindings {
   @override
   void dependencies() {
     Get.put<SplashController>(SplashController(
-      internetConnectivity: Get.find<InternetConnectivity>(),
+      internetConnectivity: Get.find<Internet>(),
     ));
   }
 }

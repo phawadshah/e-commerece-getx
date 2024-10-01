@@ -1,17 +1,15 @@
 import 'package:get/get.dart';
-import 'package:shop/app/core/configs/user_config.dart';
+import 'package:shop/app/utils/services/configs/user_config.dart';
 import 'package:shop/app/modules/wishlist/data/repositories/wishlist_repository.dart';
-import 'package:shop/app/utils/mixins/loading_mixin.dart';
-
 import '../../home/data/models/product.dart';
 
 class WishlistController extends GetxController {
   final UserConfig _userConfig;
   final WishlistRepository _wishlistRepository;
-  WishlistController(
-      {required UserConfig userConfig,
-      required WishlistRepository wishlistRepository})
-      : _userConfig = userConfig,
+  WishlistController({
+    required UserConfig userConfig,
+    required WishlistRepository wishlistRepository,
+  })  : _userConfig = userConfig,
         _wishlistRepository = wishlistRepository;
 
   RxList<Product> wishlist = <Product>[].obs;

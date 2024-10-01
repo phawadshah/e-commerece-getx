@@ -54,8 +54,8 @@ class SearchPage extends GetView<SearchControllerr> {
                       controller.searchText.isEmpty
                   ? HistoryWidget(
                       previousSearches: controller.previousSearches,
-                      onTap: controller.onSearchItemTap,
-                      onClearHistoryTap: controller.onRemoveHistoryItemTap,
+                      onItemTap: controller.onHistoryItemTap,
+                      onClearSearchItemTap: controller.onClearHistoryItemTap,
                       onClearAllTap: controller.onClearAllTap,
                     )
                   : PredictionWidget(

@@ -2,9 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
-
 import 'exceptions/app_exceptions.dart';
 
 class ApiBaseHelper {
@@ -18,7 +16,7 @@ class ApiBaseHelper {
     try {
       response = await client.get(url, headers: headers);
     } on SocketException {
-      throw FetchDataException('No Internet connection');
+      throw FetchDataException();
     } on http.ClientException catch (e) {
       throw ApiConnectionException(e.message);
     } catch (e) {
@@ -34,18 +32,12 @@ class ApiBaseHelper {
       case 200:
         return;
       case 400:
-        throw BadRequestException(
-          response.body.toString(),
-        );
+        throw BadRequestException(response.body.toString());
       case 403:
-        throw UnauthorisedException(
-          response.body.toString(),
-        );
+        throw UnauthorisedException(response.body.toString());
       case 500:
       default:
-        throw FetchDataException(
-          'Error occured while Communication with Server with StatusCode : ${response.statusCode}',
-        );
+        throw FetchDataException();
     }
   }
 }

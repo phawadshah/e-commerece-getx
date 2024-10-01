@@ -1,13 +1,21 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:async';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 
-class EnvServices extends GetxService {
+class EnvService extends GetxService {
   late String _baseUrl;
   String get baseUrl => _baseUrl;
 
-  Future<void> loadEnv() async {
-    await dotenv.load(fileName: ".env");
+  @override
+  void onInit() async {
+    super.onInit();
+    await _loadEnv();
+  }
+
+  Future<void> _loadEnv() async {
+    await dotenv.load(fileName: EnvConstants.FILE_NAME);
     _populateEnv();
   }
 
@@ -17,6 +25,6 @@ class EnvServices extends GetxService {
 }
 
 class EnvConstants {
-  // ignore: constant_identifier_names
   static const String BASE_URL = 'BASE_URL';
+  static const String FILE_NAME = '.env';
 }

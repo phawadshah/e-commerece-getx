@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shop/app/core/global/global.dart';
 import 'package:shop/app/modules/home/data/models/product.dart';
+import 'package:shop/app/modules/search/data/models/search_product_model.dart';
 import 'package:shop/app/modules/search/data/repository/search_repository.dart';
-import 'package:shop/app/core/configs/user_config.dart';
+import 'package:shop/app/modules/search/services/search_service.dart';
+
 import 'package:shop/app/utils/pages/app_pages.dart';
 
 class SearchControllerr extends GetxController {
   final SearchRepository _searchRepository;
-  final UserConfig _userConfig;
+  final SearchService _searchService;
+
   SearchControllerr({
     required SearchRepository searchRepository,
-    required UserConfig userConfig,
+    required SearchService searchService,
   })  : _searchRepository = searchRepository,
-        _userConfig = userConfig;
+        _searchService = searchService;
 
   final TextEditingController _searchController = TextEditingController();
   TextEditingController get searchController => _searchController;
@@ -23,7 +26,8 @@ class SearchControllerr extends GetxController {
 
   Rx<String> searchText = "".obs;
   final RxList<Product> searchResults = <Product>[].obs;
-  final RxList<Product> previousSearches = <Product>[].obs;
+  final RxList<SearchProductModel> previousSearches =
+      <SearchProductModel>[].obs;
 
   RxBool hasError = false.obs;
   RxString error = ''.obs;
@@ -35,13 +39,13 @@ class SearchControllerr extends GetxController {
   }
 
   _init() {
-    previousSearches.value = _userConfig.previousSearches;
-    _userConfig.previousSearches.listen((results) {
-      previousSearches.value = results;
-    });
+    previousSearches.value = _searchService.previousSearches;
   }
 
   void onScreenTap() => _searchFocusNode.unfocus();
+  void _registerListener() {
+    searchController.addListener(_onSearchFieldChange);
+  }
 
   void onClearTap() {
     _searchController.clear();
@@ -49,19 +53,42 @@ class SearchControllerr extends GetxController {
     searchResults.value = [];
   }
 
-  void onRemoveHistoryItemTap(Product product) async {
-    await _userConfig.removeSearch(product);
+  void onClearHistoryItemTap(SearchProductModel product) async {
+    await _searchService.removeSearch(product);
   }
 
   void onClearAllTap() async {
-    await _userConfig.clearSearchHistory();
+    await _searchService.clearSearchHistory();
   }
 
-  void onSearchItemTap(Product product) async {
+  Future<void> onHistoryItemTap(SearchProductModel product) async {
     _searchFocusNode.unfocus();
     !previousSearches.contains(product)
-        ? await _userConfig.addSearchedProducts(product)
+        ? await _searchService.addSearchedProducts(product)
         : null;
+    await _fetchProduct(product.id);
+  }
+
+  Future<void> _fetchProduct(int id) async {
+    final errorOrProduct = await _searchRepository.fetchProduct(id);
+    errorOrProduct.fold((e) {
+      hasError(true);
+      error(e.toString());
+    }, (product) {
+      _goToProductDetailsScreen(product);
+    });
+  }
+
+  Future<void> onSearchItemTap(Product product) async {
+    _searchFocusNode.unfocus();
+    !previousSearches.any((s) => s.id == product.id)
+        ? await _searchService.addSearchedProducts(
+            SearchProductModel(id: product.id, title: product.title))
+        : null;
+    _goToProductDetailsScreen(product);
+  }
+
+  void _goToProductDetailsScreen(Product product) {
     Get.toNamed(
       Routes.PRODUCTDETAILS,
       id: searchNavigationId,
@@ -70,10 +97,6 @@ class SearchControllerr extends GetxController {
         'tag': "${Routes.SEARCH}/${product.id}",
       },
     );
-  }
-
-  void _registerListener() {
-    searchController.addListener(_onSearchFieldChange);
   }
 
   void _onSearchFieldChange() {
@@ -92,13 +115,13 @@ class SearchControllerr extends GetxController {
     hasError(false);
     error('');
     searchResults.value = [];
-    final results = await _searchRepository.searchProducts(query);
-    results.fold(
+    final errorOrProducts = await _searchRepository.searchProducts(query);
+    errorOrProducts.fold(
       (e) {
         hasError(true);
         error(e.toString());
       },
-      (data) => searchResults.value = data,
+      (products) => searchResults.value = products,
     );
   }
 }

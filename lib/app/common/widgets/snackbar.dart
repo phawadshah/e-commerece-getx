@@ -14,7 +14,7 @@ class KSnackbar {
     Get.closeAllSnackbars();
     return Get.showSnackbar(
       GetSnackBar(
-        backgroundColor: Colors.blue.shade200,
+        backgroundColor: Colors.blue.shade400,
         snackPosition: SnackPosition.BOTTOM,
         snackStyle: SnackStyle.FLOATING,
         borderRadius: 4,

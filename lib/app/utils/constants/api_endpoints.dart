@@ -1,22 +1,22 @@
-// ignore_for_file: unused_element
+// ignore_for_file: unused_element, constant_identifier_names
 
 class ApiEndpoints {
   ApiEndpoints._();
 
-  static const String allProducts = 'products';
-  static const String allCategories = 'products/categories';
-  static const String smartPhones = 'products/category/smartphones';
-  static const String fragrances = 'products/category/fragrances';
-  static const String skinCare = 'products/category/skin-care';
-  static const String groceries = 'products/category/groceries';
-  static const String laptops = 'products/category/laptops';
-  static const String beauty = 'products/category/beauty';
-  static const String menWatches = 'products/category/mens-watches';
-  static const String furniture = 'products/category/furniture';
-  static const String shoes = 'products/category/mens-shoes';
-  static const String homeDecor = 'products/category/home-decoration';
-  static const String search = 'products/search';
+  static const String ALL_PRODUCTS = 'products';
+  static const String SEARCH = 'products/search';
+  static const String BEAUTY = 'products/category/beauty';
+  static const String LAPTOPS = 'products/category/laptops';
+  static const String ALL_CATEGORIES = 'products/categories';
+  static const String GROCERIES = 'products/category/groceries';
+  static const String FURNITURE = 'products/category/furniture';
+  static const String SKIN_CARE = 'products/category/skin-care';
+  static const String MEN_SHOES = 'products/category/mens-shoes';
+  static const String FRAGRANCES = 'products/category/fragrances';
+  static const String SMARTPHONES = 'products/category/smartphones';
+  static const String MEN_WATCHES = 'products/category/mens-watches';
+  static const String HOME_DECOR = 'products/category/home-decoration';
 
   /// ==== ===========
-  static const String categoryProducts = 'products/category';
+  static const String CATEGORY_PRODUCTS = 'products/category';
 }

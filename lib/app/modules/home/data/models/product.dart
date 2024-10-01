@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_typing_uninitialized_variables
 
 import 'dart:convert';
-import 'dart:developer';
 
 class Product {
   final int id;
@@ -53,6 +52,34 @@ class Product {
     required this.images,
     this.isFav = false,
   });
+
+  Product.copyWith(Product product, {bool isFav = false})
+      : this(
+          id: product.id,
+          title: product.title,
+          description: product.description,
+          category: product.category,
+          price: product.price,
+          discountPercentage: product.discountPercentage,
+          rating: product.rating,
+          stock: product.stock,
+          tags: product.tags,
+          brand: product.brand,
+          sku: product.sku,
+          weight: product.weight,
+          dimensions: product.dimensions,
+          warrantyInformation: product.warrantyInformation,
+          shippingInformation: product.shippingInformation,
+          availabilityStatus: product.availabilityStatus,
+          reviews: product.reviews,
+          returnPolicy: product.returnPolicy,
+          minimumOrderQuantity: product.minimumOrderQuantity,
+          meta: product.meta,
+          thumbnail: product.thumbnail,
+          images: product.images,
+          isFav: isFav,
+        );
+
   factory Product.fromJson(Map<String, dynamic> json, {bool isFav = false}) {
     return Product(
       id: json['id'] ?? '',

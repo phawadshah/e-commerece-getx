@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:shop/app/modules/home/data/models/product.dart';
+import 'package:shop/app/modules/search/data/models/search_product_model.dart';
 import 'package:shop/app/utils/helper.dart';
 
 class HistoryWidget extends StatelessWidget {
   const HistoryWidget({
     super.key,
     required this.previousSearches,
-    this.onTap,
-    this.onClearHistoryTap,
+    this.onItemTap,
+    this.onClearSearchItemTap,
     this.onClearAllTap,
   });
 
-  final List<Product> previousSearches;
-  final Function(Product)? onTap;
-  final Function(Product)? onClearHistoryTap;
+  final List<SearchProductModel> previousSearches;
+  final Function(SearchProductModel)? onItemTap;
+  final Function(SearchProductModel)? onClearSearchItemTap;
   final Function()? onClearAllTap;
 
   @override
@@ -52,7 +52,7 @@ class HistoryWidget extends StatelessWidget {
           itemBuilder: (_, index) {
             return GestureDetector(
               onTap: () {
-                onTap?.call(previousSearches[index]);
+                onItemTap?.call(previousSearches[index]);
               },
               child: Row(
                 children: [
@@ -73,7 +73,7 @@ class HistoryWidget extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      onClearHistoryTap?.call(previousSearches[index]);
+                      onClearSearchItemTap?.call(previousSearches[index]);
                     },
                     child: const Icon(
                       Icons.clear,

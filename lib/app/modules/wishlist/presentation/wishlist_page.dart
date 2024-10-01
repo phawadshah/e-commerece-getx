@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shop/app/common/widgets/empty.dart';
 import 'package:shop/app/common/widgets/error.dart';
-import 'package:shop/app/common/widgets/loading.dart';
 import 'package:shop/app/common/widgets/product.dart';
-import 'package:shop/app/utils/constants/enums.dart';
 
 import 'wishlist_controller.dart';
 

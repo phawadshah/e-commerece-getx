@@ -80,6 +80,15 @@ class NavigationBarWigdet extends StatelessWidget {
               onTap(3);
             },
           ),
+          NavBarItem(
+            icon: unselectedIcons[4],
+            activeIcon: selectedIcons[4],
+            active: currentIndex == 4,
+            label: "Profile",
+            onTap: () {
+              onTap(4);
+            },
+          ),
         ],
       ),
     );
@@ -91,6 +100,7 @@ final List<Widget> unselectedIcons = [
   const Icon(Icons.search, size: 24, color: Colors.black38),
   const Icon(Icons.category, size: 24, color: Colors.black38),
   const Icon(Icons.shopping_cart, size: 24, color: Colors.black38),
+  const Icon(Icons.person, size: 24, color: Colors.black38),
 ];
 
 final List<Widget> selectedIcons = [
@@ -98,4 +108,5 @@ final List<Widget> selectedIcons = [
   const Icon(Icons.search, size: 26, color: Colors.blue),
   const Icon(Icons.category, size: 26, color: Colors.blue),
   const Icon(Icons.shopping_cart, size: 26, color: Colors.blue),
+  const Icon(Icons.person, size: 26, color: Colors.blue),
 ];

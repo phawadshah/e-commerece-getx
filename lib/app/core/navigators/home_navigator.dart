@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:shop/app/core/global/global.dart';
 import 'package:shop/app/modules/product_details/presentation/product_details_bindings.dart';
 import 'package:shop/app/modules/product_details/presentation/product_details_page.dart';
@@ -12,7 +13,7 @@ import 'package:shop/app/utils/pages/app_pages.dart';
 import '../../modules/home/presentation/home_bindings.dart';
 import '../../modules/home/presentation/home_page.dart';
 
-class HomeNavigator extends StatelessWidget {
+class HomeNavigator extends StatelessWidget implements CustomNavBarScreen {
   final GlobalKey<NavigatorState>? _navigatorKey;
   const HomeNavigator(
       {super.key, required GlobalKey<NavigatorState>? navigatorKey})
@@ -20,12 +21,19 @@ class HomeNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      key: _navigatorKey,
-      initialRoute: Routes.HOME,
-      onGenerateRoute: _onGenerateRoute,
-    );
+    return screen;
   }
+
+  @override
+  RouteAndNavigatorSettings? get routeAndNavigatorSettings =>
+      RouteAndNavigatorSettings(
+        navigatorKey: _navigatorKey,
+        initialRoute: Routes.HOME,
+        onGenerateRoute: _onGenerateRoute,
+      );
+
+  @override
+  Widget get screen => const HomePage();
 }
 
 Route? _onGenerateRoute(RouteSettings settings) {

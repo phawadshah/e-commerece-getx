@@ -3,7 +3,6 @@ import 'package:shop/app/modules/products/data/repository/products_repository.da
 import 'package:shop/app/modules/products/presentation/products_controller.dart';
 import 'package:shop/app/server/api_base_helper.dart';
 import 'package:shop/app/utils/constants/url_builder.dart';
-import 'package:shop/app/utils/services/env_services.dart';
 
 class ProductsBindings extends Bindings {
   final String uniqueTag;
@@ -12,10 +11,8 @@ class ProductsBindings extends Bindings {
   void dependencies() {
     Get.lazyPut<ProductsRepository>(
       () => ProductsRepository(
-        apiBaseHelper: ApiBaseHelper(),
-        urlBuilder: UrlBuilder(
-          envService: Get.find<EnvServices>(),
-        ),
+        apiBaseHelper: Get.find<ApiBaseHelper>(),
+        urlBuilder: Get.find<UrlBuilder>(),
       ),
     );
     Get.put<ProductsController>(

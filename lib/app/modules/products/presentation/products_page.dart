@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shop/app/common/widgets/empty.dart';
 import 'package:shop/app/common/widgets/error.dart';
 import 'package:shop/app/modules/products/presentation/products_controller.dart';
 import 'package:shop/app/utils/constants/enums.dart';
@@ -41,16 +40,12 @@ class ProductsPage extends GetView<ProductsController> {
     } else if (controller.state == ControllerState.LOADING) {
       return const KLoadingWidget();
     }
-    return Obx(
-      () => controller.products.isEmpty
-          ? const KEmptyWidget()
-          : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              child: AllProducts(
-                products: controller.products,
-                onTap: controller.onProductTap,
-              ),
-            ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      child: AllProducts(
+        products: controller.products,
+        onTap: controller.onProductTap,
+      ),
     );
   }
 }

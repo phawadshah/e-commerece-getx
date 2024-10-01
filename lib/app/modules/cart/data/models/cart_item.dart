@@ -3,19 +3,19 @@ import 'dart:convert';
 
 import 'package:shop/app/modules/home/data/models/product.dart';
 
-class CartProductModel {
+class CartItem {
   final Product product;
   int quantity;
-  CartProductModel({
+  CartItem({
     required this.product,
     required this.quantity,
   });
 
-  CartProductModel copyWith({
+  CartItem copyWith({
     Product? product,
     int? quantity,
   }) {
-    return CartProductModel(
+    return CartItem(
       product: product ?? this.product,
       quantity: quantity ?? this.quantity,
     );
@@ -28,8 +28,8 @@ class CartProductModel {
     };
   }
 
-  factory CartProductModel.fromMap(Map<String, dynamic> map) {
-    return CartProductModel(
+  factory CartItem.fromMap(Map<String, dynamic> map) {
+    return CartItem(
       product: Product.fromJson(map['product'] as Map<String, dynamic>),
       quantity: map['quantity'] as int,
     );
@@ -37,20 +37,10 @@ class CartProductModel {
 
   String toJson() => json.encode(toMap());
 
-  factory CartProductModel.fromJson(String source) =>
-      CartProductModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CartItem.fromJson(String source) =>
+      CartItem.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() =>
       'Cartproductmodel(product: $product, quantity: $quantity)';
-
-  @override
-  bool operator ==(covariant CartProductModel other) {
-    if (identical(this, other)) return true;
-
-    return other.product == product && other.quantity == quantity;
-  }
-
-  @override
-  int get hashCode => product.hashCode ^ quantity.hashCode;
 }

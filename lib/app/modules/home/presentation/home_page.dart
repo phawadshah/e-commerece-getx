@@ -4,7 +4,6 @@ import 'package:shop/app/common/widgets/empty.dart';
 import 'package:shop/app/modules/home/presentation/widgets/all_products.dart';
 import 'package:shop/app/modules/home/presentation/widgets/category_products.dart';
 import 'package:shop/app/utils/helper.dart';
-
 import 'home_controller.dart';
 import 'widgets/category.dart';
 
@@ -44,91 +43,20 @@ class HomePage extends GetView<HomeController> {
                   ),
           ),
 
-          /// Laptops Widget
           Obx(
-            () => CategoryProducts(
-              categoryTitle: "Laptops",
-              products: controller.laptops.value,
-              wislist: controller.wishList.value,
-              onTap: controller.onProductTap,
-              onFavTap: controller.onHeartTap,
-            ),
-          ),
-
-          /// Beauty Widget
-          Obx(
-            () => CategoryProducts(
-              categoryTitle: "Beauty",
-              products: controller.beauty.value,
-              wislist: controller.wishList.value,
-              onTap: controller.onProductTap,
-              onFavTap: controller.onHeartTap,
-            ),
-          ),
-
-          /// SkinCare Widget
-          Obx(
-            () => CategoryProducts(
-              categoryTitle: "Skin Care",
-              products: controller.skinCare.value,
-              wislist: controller.wishList.value,
-              onTap: controller.onProductTap,
-              onFavTap: controller.onHeartTap,
-            ),
-          ),
-
-          /// Men Watches Widget
-          Obx(
-            () => CategoryProducts(
-              categoryTitle: "Men Watches",
-              products: controller.menWatches.value,
-              wislist: controller.wishList.value,
-              onTap: controller.onProductTap,
-              onFavTap: controller.onHeartTap,
-            ),
-          ),
-
-          /// Furniture Widget
-          Obx(
-            () => CategoryProducts(
-              categoryTitle: "Furniture",
-              products: controller.furniture.value,
-              wislist: controller.wishList.value,
-              onTap: controller.onProductTap,
-              onFavTap: controller.onHeartTap,
-            ),
-          ),
-
-          /// Shoes Widget
-          Obx(
-            () => CategoryProducts(
-              categoryTitle: "Shoes",
-              products: controller.shoes.value,
-              wislist: controller.wishList.value,
-              onTap: controller.onProductTap,
-              onFavTap: controller.onHeartTap,
-            ),
-          ),
-
-          /// Home Decor Widget
-          Obx(
-            () => CategoryProducts(
-              categoryTitle: "Home Decor",
-              products: controller.homeDecor.value,
-              wislist: controller.wishList.value,
-              onTap: controller.onProductTap,
-              onFavTap: controller.onHeartTap,
-            ),
-          ),
-
-          /// groceries Widget
-          Obx(
-            () => CategoryProducts(
-              categoryTitle: "Groceries",
-              products: controller.groceries.value,
-              wislist: controller.wishList.value,
-              onTap: controller.onProductTap,
-              onFavTap: controller.onHeartTap,
+            () => Column(
+              children: controller.products
+                  .map(
+                    (itemList) => CategoryProducts(
+                      categoryTitle:
+                          itemList.first.category.capitalizeFirst.toString(),
+                      products: itemList,
+                      wislist: controller.wishList,
+                      onTap: controller.onProductTap,
+                      onFavTap: controller.onHeartTap,
+                    ),
+                  )
+                  .toList(),
             ),
           ),
 
@@ -136,7 +64,7 @@ class HomePage extends GetView<HomeController> {
           Obx(
             () => AllProducts(
               products: controller.allProducts.value,
-              wislist: controller.wishList.value,
+              wislist: controller.wishList,
               onTap: controller.onProductTap,
               onFavTap: controller.onHeartTap,
             ),

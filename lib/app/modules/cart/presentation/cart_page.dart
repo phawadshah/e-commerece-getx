@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shop/app/common/widgets/browse_widget.dart';
 import 'package:shop/app/common/widgets/empty.dart';
 import 'package:shop/app/common/widgets/error.dart';
 import 'package:shop/app/common/widgets/loading.dart';
 import 'package:shop/app/modules/cart/presentation/widgets/cart_widget.dart';
 import 'package:shop/app/utils/constants/enums.dart';
-
+import 'package:shop/app/utils/helper.dart';
 import 'cart_controller.dart';
 import 'widgets/bottom_widget.dart';
 
@@ -19,7 +20,9 @@ class CartPage extends GetView<CartController> {
         title: const Text('Cart'),
       ),
       bottomNavigationBar: Obx(
-        () => controller.cartItems.isNotEmpty && !controller.hasError.value
+        () => controller.cartItems.isNotEmpty &&
+                !controller.hasError.value &&
+                controller.state == ControllerState.IDLE
             ? BottomWidget(
                 total: controller.total.value,
               )
@@ -38,15 +41,34 @@ class CartPage extends GetView<CartController> {
     } else if (controller.state == ControllerState.LOADING) {
       return const KLoadingWidget();
     } else if (controller.productIds.isEmpty) {
-      return const KEmptyWidget(
-        title: "No Items in Cart",
+      return Column(
+        children: [
+          addVerticleSpace(40),
+          KEmptyWidget(
+            title:
+                "No Items in Cart ${controller.previouslyViewedItems.length}",
+          ),
+          addVerticleSpace(Get.height * 0.2),
+          controller.previouslyViewedItems.isNotEmpty
+              ? KBrowseWidget(
+                  products: controller.previouslyViewedItems.value,
+                  wislist: controller.wishListItems,
+                  onTap: (product) {},
+                  onFavTap: (p) {},
+                )
+              : const SizedBox.shrink(),
+        ],
       );
     } else {
-      return CartItems(
-        products: controller.cartItems.value,
-        onRemovetap: controller.onRemoveTap,
-        onDecrementtap: controller.onDecrementtap,
-        onAddTap: controller.onAddTap,
+      return Column(
+        children: [
+          CartItems(
+            products: controller.cartItems.value,
+            onRemovetap: controller.onRemoveTap,
+            onDecrementtap: controller.onDecrementtap,
+            onAddTap: controller.onAddTap,
+          ),
+        ],
       );
     }
   }

@@ -3,7 +3,7 @@ import 'package:shop/app/common/widgets/image.dart';
 import 'package:shop/app/modules/home/data/models/product.dart';
 
 import '../../../../utils/helper.dart';
-import '../../data/cartProductModel.dart';
+import '../../data/models/cart_item.dart';
 
 class CartItems extends StatelessWidget {
   const CartItems({
@@ -14,7 +14,7 @@ class CartItems extends StatelessWidget {
     this.onDecrementtap,
   });
 
-  final List<CartProductModel> products;
+  final List<CartItem> products;
   final Function(Product)? onRemovetap;
   final Function(Product)? onDecrementtap;
   final Function(Product)? onAddTap;
