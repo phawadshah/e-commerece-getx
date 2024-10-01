@@ -2,10 +2,11 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'exceptions/app_exceptions.dart';
 
-class ApiBaseHelper {
+class ApiBaseHelper extends GetxService {
   http.Client client = http.Client();
 
   Future request(

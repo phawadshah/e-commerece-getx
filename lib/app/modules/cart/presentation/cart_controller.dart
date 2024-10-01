@@ -21,80 +21,56 @@ class CartController extends GetxController with LoadingMixin {
         _previouslyViewedController = previouslyViewedController;
 
   RxList<CartItem> cartItems = <CartItem>[].obs;
-  RxList<int> productIds = <int>[].obs;
 
-  RxList<Product> previouslyViewedItems = <Product>[].obs;
-  RxList<int> wishListItems = <int>[].obs;
+  RxList<int> get cartItemIds =>
+      _userConfig.cartItems.map((p) => p.id).toList().obs;
+  RxList<Product> get previouslyViewedItems =>
+      _previouslyViewedController.previouslyViewedProducts;
+  RxList<int> get wishListItems => _userConfig.wishlistItemsIds;
 
-  RxDouble total = 0.0.obs;
+  RxDouble get total => _userConfig.cartTotal;
   StreamSubscription<double>? totalSubscription;
 
   RxBool hasError = false.obs;
   RxString error = ''.obs;
 
-  void init() async {
-    _initUserConfig();
+  Future<void> init() async {
     await executeWithLoading(
-      () => _fetchProducts(productIds),
+      () => _fetchProducts(cartItemIds),
     );
-    _registerStreams();
-  }
-
-  void _initUserConfig() {
-    // productIds.value = _userConfig.cartItems.map((p) => p.id).toList();
-    // total.value = _userConfig.cartTotal.value;
-    previouslyViewedItems.value =
-        _previouslyViewedController.previouslyViewedProducts;
-
-    _previouslyViewedController.previouslyViewedProducts.listen((items) {
-      previouslyViewedItems(items);
-    });
-
-    wishListItems = _userConfig.wishlistItemsIds;
-    // Listen if the list is changed
-    _userConfig.wishlistItemsIds.listen((items) {
-      wishListItems(items);
-    });
-  }
-
-  void _registerStreams() {
-    // _userConfig.cartTotal.listen((sum) => total.value = sum);
-    // _userConfig.cartItems.listen((items) {
-    //   productIds.value = items.map((p) => p.id).toList();
-    // });
   }
 
   void onRetry() async {
     error('');
     hasError(false);
-    // await executeWithLoading(
-    //   delay: const Duration(milliseconds: 700),
-    //   () => _fetchProducts(_userConfig.cartItems.map((p) => p.id).toList()),
-    // );
+    await executeWithLoading(
+      delay: const Duration(milliseconds: 700),
+      () => _fetchProducts(_userConfig.cartItems.map((p) => p.id).toList()),
+    );
   }
 
   Future _fetchProducts(List<int> ids) async {
     cartItems.clear();
-    // for (var id in ids) {
-    //   final errorOrProduct = await _cartRepository.fetchProduct(id);
-    //   errorOrProduct.fold((e) {
-    //     hasError(true);
-    //     error(e.toString());
-    //   }, (product) {
-    //     cartItems.add(CartItem(
-    //         quantity: _userConfig.cartItems
-    //             .where((p) => p.id == product.id)
-    //             .first
-    //             .quantity,
-    //         product: product));
-    //   });
-    // }
+    for (var id in ids) {
+      final errorOrProduct = await _cartRepository.fetchProduct(id);
+      errorOrProduct.fold((e) {
+        hasError(true);
+        error(e.toString());
+      }, (product) {
+        cartItems.add(CartItem(
+            quantity: _userConfig.cartItems
+                .where((p) => p.id == product.id)
+                .first
+                .quantity,
+            product: product));
+      });
+    }
   }
 
   void onRemoveTap(Product product) async {
     cartItems.removeWhere((e) => e.product.id == product.id);
     cartItems.refresh();
-    // await _userConfig.removeFromCart(product);
+    await _userConfig.removeItemFromCart(product);
   }
 
   void onDecrementtap(Product product) async {
@@ -105,12 +81,12 @@ class CartController extends GetxController with LoadingMixin {
       cartItems.where((e) => e.product.id == product.id).first.quantity -= 1;
     }
     cartItems.refresh();
-    // await _userConfig.decrementQuantity(product);
+    await _userConfig.decrementCartItemQuantity(product);
   }
 
   void onAddTap(Product product) async {
     cartItems.where((e) => e.product.id == product.id).first.quantity += 1;
     cartItems.refresh();
-    // await _userConfig.addToCart(product);
+    await _userConfig.addItemToCart(product);
   }
 }

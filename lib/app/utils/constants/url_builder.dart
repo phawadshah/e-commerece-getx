@@ -1,7 +1,8 @@
+import 'package:get/get.dart';
 import 'package:shop/app/utils/constants/api_endpoints.dart';
 import 'package:shop/app/utils/services/env_service.dart';
 
-class UrlBuilder {
+class UrlBuilder extends GetxService {
   final EnvService _envService;
   UrlBuilder({
     required EnvService envService,

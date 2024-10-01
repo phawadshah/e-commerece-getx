@@ -6,9 +6,9 @@ import 'package:shop/app/common/widgets/error.dart';
 import 'package:shop/app/common/widgets/loading.dart';
 import 'package:shop/app/modules/cart/presentation/widgets/cart_widget.dart';
 import 'package:shop/app/utils/constants/enums.dart';
-import 'package:shop/app/utils/helper.dart';
 import 'cart_controller.dart';
 import 'widgets/bottom_widget.dart';
+import 'widgets/empty_widget.dart';
 
 class CartPage extends GetView<CartController> {
   const CartPage({super.key});
@@ -40,15 +40,11 @@ class CartPage extends GetView<CartController> {
       );
     } else if (controller.state == ControllerState.LOADING) {
       return const KLoadingWidget();
-    } else if (controller.productIds.isEmpty) {
+    } else if (controller.cartItemIds.isEmpty) {
       return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          addVerticleSpace(40),
-          KEmptyWidget(
-            title:
-                "No Items in Cart ${controller.previouslyViewedItems.length}",
-          ),
-          addVerticleSpace(Get.height * 0.2),
+          const EmptyCartWidget(),
           controller.previouslyViewedItems.isNotEmpty
               ? KBrowseWidget(
                   products: controller.previouslyViewedItems.value,

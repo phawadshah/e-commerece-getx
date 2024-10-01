@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shop/app/utils/log/logger.dart';
 
 import '../../modules/home/data/models/product.dart';
 import '../../utils/services/previously_viewed_service.dart';
@@ -20,12 +21,18 @@ class PreviouslyViewedController extends GetxController {
   RxList<Product> previouslyViewedProducts = <Product>[].obs;
 
   @override
-  void onInit() {
-    if (_authController.user != null) {
-      _uid = _authController.user!.uid;
-      _getItems();
-    }
+  void onInit() async {
+    await loadPreviouslyViewedItems();
     super.onInit();
+  }
+
+  Future<void> loadPreviouslyViewedItems() async {
+    clear();
+    if (_authController.user != null) {
+      KLogger.debug("Fetching previously viewed items");
+      _uid = _authController.user!.uid;
+      await _getItems();
+    }
   }
 
   Future<void> _getItems() async {
@@ -37,7 +44,7 @@ class PreviouslyViewedController extends GetxController {
 
   Future<void> addViewedProduct(Product product) async {
     if (!isAuthenticated) return;
-    previouslyViewedProducts.insert(0, product);
+    previouslyViewedProducts.add(product);
     await _previouslyViewedService.add(uid, product);
   }
 

@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -12,10 +14,6 @@ class LocalStorageService extends GetxService {
     _storage = GetStorage();
     super.onInit();
   }
-
-  // Future<LocalStorageService> initStorage() async {
-  //   return this;
-  // }
 
   Future<void> write<T>({required String key, required T data}) async {
     return await _storage.write(key, data);
@@ -34,4 +32,36 @@ class StorageConstants {
   static const String WISHLIST = "wishlist";
   static const String CART = "cart";
   static const String PREVIOUSSEARCHES = "previousSearches";
+}
+
+class StorageProduct {
+  final int id;
+  final double price;
+  int quantity;
+  StorageProduct({
+    required this.id,
+    required this.price,
+    this.quantity = 1,
+  });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'price': price,
+      'quantity': quantity,
+    };
+  }
+
+  factory StorageProduct.fromMap(Map<String, dynamic> map) {
+    return StorageProduct(
+      id: map['id'] as int,
+      price: map['price'] as double,
+      quantity: map['quantity'] as int,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory StorageProduct.fromJson(String source) =>
+      StorageProduct.fromMap(json.decode(source) as Map<String, dynamic>);
 }

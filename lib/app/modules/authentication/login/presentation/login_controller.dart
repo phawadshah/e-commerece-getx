@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shop/app/common/widgets/error_dialog.dart';
 import 'package:shop/app/modules/authentication/login/data/models/login_model.dart';
-import 'package:shop/app/utils/log/logger.dart';
 import 'package:shop/app/utils/mixins/loading_mixin.dart';
 import 'package:shop/app/utils/pages/app_pages.dart';
 import '../data/repository/login_repository.dart';

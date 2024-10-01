@@ -18,7 +18,13 @@ class CategoriesController extends GetxController with LoadingMixin {
   final RxBool hasError = false.obs;
   final Rx<String> error = ''.obs;
 
-  void init() async {
+  @override
+  void onInit() async {
+    await _init();
+    super.onInit();
+  }
+
+  Future<void> _init() async {
     categories.clear();
     await executeWithLoading(
       () => _fetchAllCategories(),
@@ -29,7 +35,7 @@ class CategoriesController extends GetxController with LoadingMixin {
     hasError(false);
     error('');
     await executeWithLoading(
-      delay: const Duration(milliseconds: 700),
+      delay: const Duration(milliseconds: 300),
       () => _fetchAllCategories(),
     );
   }
@@ -47,7 +53,7 @@ class CategoriesController extends GetxController with LoadingMixin {
   void onCategoryTab(CategoryModel category) {
     Get.toNamed(
       Routes.PRODCUTS,
-      id: categoriesNavigatioId,
+      id: Global.categoriesNavigatioId,
       arguments: {
         "category": category,
         "tag": "${Routes.CATEGORIES}/${category.name}"

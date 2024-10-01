@@ -53,7 +53,7 @@ Route? _onGenerateRoute(RouteSettings settings) {
         routeName: Routes.PRODUCTDETAILS,
         page: () => ProductDetailsPage(
           uniqueTag: tag,
-          navigationId: searchNavigationId,
+          navigationId: Global.searchNavigationId,
         ),
         binding: ProductDetailsBindings(
           uniqueTag: tag,

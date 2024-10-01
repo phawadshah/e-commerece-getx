@@ -6,7 +6,12 @@ import 'package:shop/app/utils/services/configs/user_config.dart';
 class BaseBindings extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<BaseController>(() => BaseController(
-        userConfig: Get.find<UserConfig>(), navigatorKeys: navigatorKeys));
+    Get.lazyPut<BaseController>(
+      () => BaseController(
+        userConfig: Get.find<UserConfig>(),
+        // navigatorKeys: Global.navigatorKeys,
+        global: Get.find<Global>(),
+      ),
+    );
   }
 }

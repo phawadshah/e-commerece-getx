@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as fauth;
 import 'package:get/get.dart';
+import 'package:shop/app/initials/controllers.dart/user_controller.dart';
 import 'package:shop/app/server/exceptions/auth_exceptions.dart';
 import '../../modules/authentication/login/data/models/login_model.dart';
 import '../../modules/authentication/sign_up/data/model/singup_model.dart';
@@ -47,6 +48,8 @@ class AuthController extends GetxController {
   Future<bool> logout() async {
     try {
       await _authService.signOut();
+      clear();
+      Get.find<UserController>().clear();
       return true;
     } on fauth.FirebaseAuthException catch (e) {
       throw AuthExceptions(e.code, e.message!);

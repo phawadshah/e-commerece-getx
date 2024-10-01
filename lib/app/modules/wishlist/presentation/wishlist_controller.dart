@@ -45,6 +45,6 @@ class WishlistController extends GetxController {
 
   void onDeleteTap(Product product) async {
     wishlist.any((w) => w.id == product.id) ? wishlist.remove(product) : null;
-    await _userConfig.removeFromWhislist(product);
+    await _userConfig.removeItemFromWhislist(product);
   }
 }

@@ -36,9 +36,9 @@ class HomeController extends GetxController {
   }
 
   Future<void> onHeartTap(Product product) async =>
-      await _userConfig.addToWhislist(product);
+      await _userConfig.addItemToWhislist(product);
 
-  void onFavTap() => Get.toNamed(Routes.WISHLIST, id: homeNavigationId);
+  void onFavTap() => Get.toNamed(Routes.WISHLIST, id: Global.homeNavigationId);
 
   Future<void> _loadData() async {
     await _fetchCategories();
@@ -49,7 +49,7 @@ class HomeController extends GetxController {
   void onCategoryTap(CategoryModel category) {
     Get.toNamed(
       Routes.PRODCUTS,
-      id: homeNavigationId,
+      id: Global.homeNavigationId,
       arguments: {
         'category': category,
         'tag': "${Routes.HOME}/${category.name}",
@@ -60,7 +60,7 @@ class HomeController extends GetxController {
   void onProductTap(Product product) {
     Get.toNamed(
       Routes.PRODUCTDETAILS,
-      id: homeNavigationId,
+      id: Global.homeNavigationId,
       arguments: {
         'product': product,
         'tag': "${Routes.HOME}/${product.id}",

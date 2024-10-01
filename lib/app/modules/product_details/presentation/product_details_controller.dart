@@ -31,8 +31,8 @@ class ProductDetailsController extends GetxController with LoadingMixin {
   @override
   void onInit() {
     _init();
-    // _total = _userConfig.cartTotal.value;
-    // _userConfig.cartTotal.listen((sum) => _total = sum);
+    _total = _userConfig.cartTotal.value;
+    _userConfig.cartTotal.listen((sum) => _total = sum);
     super.onInit();
   }
 
@@ -56,7 +56,7 @@ class ProductDetailsController extends GetxController with LoadingMixin {
   void onAddToCartTap() async {
     await executeWithLoading(delay: const Duration(milliseconds: 600),
         () async {
-      // _userConfig.addToCart(_product);
+      _userConfig.addItemToCart(_product);
     });
 
     Get.bottomSheet(

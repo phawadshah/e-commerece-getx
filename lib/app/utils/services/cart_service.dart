@@ -2,19 +2,55 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:shop/app/server/firebase_helper.dart';
 import 'package:shop/app/utils/services/local_storage_service.dart';
-
-import '../../modules/home/data/models/product.dart';
-import 'data/models/product_storage_model.dart';
+import '../../server/exceptions/app_exceptions.dart';
 
 class CartService extends GetxService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   final LocalStorageService _localStorageService;
 
   CartService({
     required LocalStorageService localStorageService,
   }) : _localStorageService = localStorageService;
 
-  Future<void> updateCartLocally(List<ProductStorageModel> items) async {
+  List<dynamic> getItemsFromLocalStorage() {
+    final data = _localStorageService.read(key: StorageConstants.CART);
+    if (data != null) {
+      return (data as List<dynamic>)
+          .map((e) => StorageProduct.fromJson(e))
+          .toList();
+    } else {
+      return <StorageProduct>[];
+    }
+  }
+
+  Future<List<StorageProduct>> getItemsFromFirebase(String uid) async {
+    List<StorageProduct> products = <StorageProduct>[];
+    await _firestore
+        .collection(FirebaseConstant.CART_PATH)
+        .doc(uid)
+        .collection("products")
+        .get()
+        .then((value) {
+          for (var element in value.docs) {
+            try {
+              products.add(StorageProduct.fromMap(element.data()));
+            } catch (e) {
+              throw SomethingWentWrongException();
+            }
+          }
+        })
+        .timeout(
+          const Duration(seconds: 10),
+          onTimeout: () => throw TimeoutException(),
+        )
+        .catchError((e) {
+          throw AppException(e.toString());
+        });
+    return products;
+  }
+
+  Future<void> updateCartLocally(List<StorageProduct> items) async {
     return await _localStorageService.write(
       key: StorageConstants.CART,
       data: List<dynamic>.from(
@@ -23,7 +59,12 @@ class CartService extends GetxService {
     );
   }
 
-  Future<void> addItemToFirebase(Product product, {required String uid}) async {
+  Future<void> clearLocalStorage() async {
+    await _localStorageService.delete(key: StorageConstants.CART);
+  }
+
+  Future<void> addItemToFirebase(StorageProduct product,
+      {required String uid}) async {
     await _firestore
         .collection(FirebaseConstant.CART_PATH)
         .doc(uid)
@@ -32,7 +73,7 @@ class CartService extends GetxService {
         .set(product.toMap());
   }
 
-  Future<void> removeItemFromFirebase(Product product,
+  Future<void> removeItemFromFirebase(StorageProduct product,
       {required String uid}) async {
     await _firestore
         .collection(FirebaseConstant.CART_PATH)
@@ -42,7 +83,7 @@ class CartService extends GetxService {
         .delete();
   }
 
-  Future<void> updateItemInFirebase(Product product,
+  Future<void> updateItemInFirebase(StorageProduct product,
       {required String uid}) async {
     await _firestore
         .collection(FirebaseConstant.CART_PATH)
@@ -52,11 +93,10 @@ class CartService extends GetxService {
         .update(product.toMap());
   }
 
-  Future<void> addListToFirebase(List<ProductStorageModel> items,
+  Future<void> addListToFirebase(List<StorageProduct> items,
       {required String uid}) async {
-    await _firestore
-        .collection(FirebaseConstant.CART_PATH)
-        .doc(uid)
-        .set({"products": List<dynamic>.from(items.map((x) => x.toJson()))});
+    for (var item in items) {
+      await addItemToFirebase(item, uid: uid);
+    }
   }
 }

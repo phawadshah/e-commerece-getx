@@ -22,10 +22,7 @@ class CategoryRepository {
           .map((category) => CategoryModel.fromJson(category))
           .toList());
     } catch (e) {
-      if (e is AppException) {
-        return Left(e);
-      }
-      return Left(AppException(e.toString()));
+      return Left(e is AppException ? e : AppException(e.toString()));
     }
   }
 }

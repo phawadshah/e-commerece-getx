@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
 import 'package:shop/app/common/widgets/error_dialog.dart';
 import 'package:shop/app/initials/controllers.dart/auth_controller.dart';
 import 'package:shop/app/initials/controllers.dart/user_controller.dart';
 import 'package:shop/app/modules/authentication/data/models/user.dart';
-import 'package:shop/app/utils/log/logger.dart';
 import 'package:shop/app/utils/mixins/loading_mixin.dart';
 import 'package:shop/app/utils/pages/app_pages.dart';
 
@@ -23,21 +23,8 @@ class ProfileController extends GetxController with LoadingMixin {
         _authController = authController,
         _userController = userController;
 
-  late User user;
-  Rx<bool> isLoggedIn = false.obs;
-
-  @override
-  void onInit() {
-    KLogger.debug(
-        "profile controller init called :: ${_userController.user.name}");
-    user = _userController.user;
-    isLoggedIn.value = _authController.isAuthenticated.value;
-    _authController.isAuthenticated.listen((value) {
-      KLogger.debug("is logged in :: $value");
-      isLoggedIn.value = value;
-    });
-    super.onInit();
-  }
+  User get user => _userController.user;
+  Rx<bool> get isLoggedIn => _authController.isAuthenticated;
 
   void onLoginTap() {
     Get.toNamed(Routes.LOGIN);
@@ -63,9 +50,12 @@ class ProfileController extends GetxController with LoadingMixin {
         () => _profileRepository.logout());
     results.fold((error) {
       kErrorDialog(Get.context!, error.toString());
-    }, (data) {
-      _authController.clear();
-      _userController.clear();
+    }, (data) async {
+      if (data) {
+        await Get.deleteAll(force: true);
+        Phoenix.rebirth(Get.context!);
+        Get.reset();
+      }
     });
   }
 

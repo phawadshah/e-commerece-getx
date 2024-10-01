@@ -23,8 +23,7 @@ class SearchService extends GetxService {
         _localStorageService.read(key: StorageConstants.PREVIOUSSEARCHES);
     data != null
         ? previousSearches.value = (data as List<dynamic>)
-            .map((product) =>
-                (SearchProductModel.fromJson(json.decode(product))))
+            .map((product) => (SearchProductModel.fromJson((product))))
             .toList()
         : null;
   }

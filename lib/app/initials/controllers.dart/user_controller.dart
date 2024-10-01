@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../modules/authentication/data/models/user.dart';
-import '../../utils/log/logger.dart';
 import '../../utils/services/user_service.dart';
 import 'auth_controller.dart';
 
@@ -40,7 +39,6 @@ class UserController extends GetxController {
   }
 
   void clear() {
-    KLogger.debug("user clear called");
     _user.value = User();
   }
 }

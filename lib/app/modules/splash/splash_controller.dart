@@ -9,8 +9,9 @@ import '../../utils/services/internet_conectivity.dart';
 class SplashController extends GetxController with LoadingMixin {
   final Internet _internetConnectivity;
 
-  SplashController({required Internet internetConnectivity})
-      : _internetConnectivity = internetConnectivity;
+  SplashController({
+    required Internet internetConnectivity,
+  }) : _internetConnectivity = internetConnectivity;
 
   RxBool showNoInternetWidget = false.obs;
 

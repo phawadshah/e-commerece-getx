@@ -56,7 +56,7 @@ Route? _onGenerateRoute(RouteSettings settings) {
         routeName: Routes.PRODCUTS,
         page: () => ProductsPage(
           uniqueTag: tag,
-          navigationId: categoriesNavigatioId,
+          navigationId: Global.categoriesNavigatioId,
         ),
         binding: ProductsBindings(
           uniqueTag: tag,
@@ -68,7 +68,7 @@ Route? _onGenerateRoute(RouteSettings settings) {
         routeName: Routes.PRODUCTDETAILS,
         page: () => ProductDetailsPage(
           uniqueTag: tag,
-          navigationId: categoriesNavigatioId,
+          navigationId: Global.categoriesNavigatioId,
         ),
         binding: ProductDetailsBindings(uniqueTag: tag),
       );

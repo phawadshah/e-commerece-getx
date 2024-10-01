@@ -5,6 +5,7 @@ import '../../../../server/exceptions/app_exceptions.dart';
 
 class ProfileRepository {
   final AuthService _authService;
+
   ProfileRepository({
     required AuthService authService,
   }) : _authService = authService;

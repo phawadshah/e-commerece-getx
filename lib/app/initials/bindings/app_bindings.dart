@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shop/app/core/global/global.dart';
 import 'package:shop/app/initials/controllers.dart/previously_viewed_controller.dart';
 import 'package:shop/app/server/api_base_helper.dart';
 import 'package:shop/app/utils/constants/url_builder.dart';
@@ -9,15 +10,16 @@ import 'package:shop/app/utils/services/internet_conectivity.dart';
 import 'package:shop/app/utils/services/local_storage_service.dart';
 import 'package:shop/app/utils/services/previously_viewed_service.dart';
 import 'package:shop/app/utils/services/wishlist_service.dart';
-
 import '../../utils/services/auth_service.dart';
 import '../../utils/services/user_service.dart';
 import '../controllers.dart/auth_controller.dart';
 import '../controllers.dart/user_controller.dart';
 
-class InitialBindings {
-  Future<void> initInitials() async {
+class AppInitialBindings extends Bindings {
+  @override
+  void dependencies() async {
     /// ======== Services ==========
+    Get.put<Global>(Global());
     Get.put<EnvService>(EnvService());
     Get.put<ApiBaseHelper>(ApiBaseHelper());
     Get.put<UrlBuilder>(UrlBuilder(envService: Get.find<EnvService>()));
@@ -31,16 +33,16 @@ class InitialBindings {
         CartService(localStorageService: Get.find<LocalStorageService>()));
 
     /// ======== CONTROLLERS ==========
-    Get.put<AuthController>(
-      AuthController(authService: Get.find<AuthService>()),
-      permanent: true,
+    Get.lazyPut<AuthController>(
+      () => AuthController(
+        authService: Get.find<AuthService>(),
+      ),
     );
-    Get.put<UserController>(
-      UserController(
+    Get.lazyPut<UserController>(
+      () => UserController(
         userService: Get.find<UserService>(),
         authController: Get.find<AuthController>(),
       ),
-      permanent: true,
     );
 
     /// ======== User Config ==========
@@ -50,6 +52,7 @@ class InitialBindings {
         wishlistService: Get.find<WishlistService>(),
         cartService: Get.find<CartService>(),
       ),
+      fenix: true,
     );
 
     /// ======== PREVIOUSLY VIEWED ITEMS   ==========
@@ -58,6 +61,7 @@ class InitialBindings {
         authController: Get.find<AuthController>(),
         previouslyViewedService: Get.find<PreviouslyViewedService>(),
       ),
+      fenix: true,
     );
   }
 }

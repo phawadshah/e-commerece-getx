@@ -69,7 +69,7 @@ Route? _onGenerateRoute(RouteSettings settings) {
           uniqueTag: tag,
           // This page is used in other navigators also
           // That's why assigning navigationKey
-          navigationId: homeNavigationId,
+          navigationId: Global.homeNavigationId,
         ),
         binding: ProductsBindings(
           // Tag is used to create multiple instances of same controller
@@ -82,7 +82,7 @@ Route? _onGenerateRoute(RouteSettings settings) {
         routeName: Routes.PRODUCTDETAILS,
         page: () => ProductDetailsPage(
           uniqueTag: tag,
-          navigationId: homeNavigationId,
+          navigationId: Global.homeNavigationId,
         ),
         binding: ProductDetailsBindings(uniqueTag: tag),
       );

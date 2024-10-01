@@ -91,7 +91,7 @@ class SearchControllerr extends GetxController {
   void _goToProductDetailsScreen(Product product) {
     Get.toNamed(
       Routes.PRODUCTDETAILS,
-      id: searchNavigationId,
+      id: Global.searchNavigationId,
       arguments: {
         "product": product,
         'tag': "${Routes.SEARCH}/${product.id}",
