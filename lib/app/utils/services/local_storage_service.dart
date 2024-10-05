@@ -23,6 +23,10 @@ class LocalStorageService extends GetxService {
     return _storage.read<T?>(key);
   }
 
+  bool getBool({required String key}) {
+    return _storage.read<bool>(key) ?? false;
+  }
+
   Future<void> delete({required String key}) async {
     return await _storage.remove(key);
   }

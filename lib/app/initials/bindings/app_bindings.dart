@@ -10,6 +10,7 @@ import 'package:shop/app/utils/services/internet_conectivity.dart';
 import 'package:shop/app/utils/services/local_storage_service.dart';
 import 'package:shop/app/utils/services/previously_viewed_service.dart';
 import 'package:shop/app/utils/services/wishlist_service.dart';
+import '../../utils/helpers/size_helper.dart';
 import '../../utils/services/auth_service.dart';
 import '../../utils/services/user_service.dart';
 import '../controllers.dart/auth_controller.dart';
@@ -31,18 +32,21 @@ class AppInitialBindings extends Bindings {
     Get.put<PreviouslyViewedService>(PreviouslyViewedService());
     Get.put<CartService>(
         CartService(localStorageService: Get.find<LocalStorageService>()));
+    Get.lazyPut<SizeManager>(() => SizeManager(), fenix: true);
 
     /// ======== CONTROLLERS ==========
     Get.lazyPut<AuthController>(
       () => AuthController(
         authService: Get.find<AuthService>(),
       ),
+      fenix: true,
     );
     Get.lazyPut<UserController>(
       () => UserController(
         userService: Get.find<UserService>(),
         authController: Get.find<AuthController>(),
       ),
+      fenix: true,
     );
 
     /// ======== User Config ==========
@@ -51,8 +55,8 @@ class AppInitialBindings extends Bindings {
         authController: Get.find<AuthController>(),
         wishlistService: Get.find<WishlistService>(),
         cartService: Get.find<CartService>(),
+        localStorageService: Get.find<LocalStorageService>(),
       ),
-      fenix: true,
     );
 
     /// ======== PREVIOUSLY VIEWED ITEMS   ==========

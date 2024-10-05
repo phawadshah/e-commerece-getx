@@ -26,6 +26,7 @@ class CartItems extends StatelessWidget {
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: products.length,
+          physics: const NeverScrollableScrollPhysics(),
           separatorBuilder: (context, index) {
             return addVerticleSpace(10);
           },

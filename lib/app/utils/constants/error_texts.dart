@@ -15,7 +15,8 @@ class ErrorTexts {
   static const String wrongPasswordProvided =
       "Wrong password provided for that user.";
 
-  static const String noInternetConnection = "No Internet Connection";
+  static const String noInternetConnection =
+      "No Internet Connection, Try connecting to a network and try again.";
   static const String resourceNotFound = "Resource Not Found";
   static const String authenticationError = "Authentication Error";
   static const String timeout = "Connection Timeout. Please try again";

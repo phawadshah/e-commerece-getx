@@ -4,8 +4,8 @@ import 'package:shop/app/common/widgets/error_dialog.dart';
 import 'package:shop/app/common/widgets/snackbar.dart';
 import 'package:shop/app/modules/authentication/sign_up/data/model/singup_model.dart';
 import 'package:shop/app/modules/authentication/sign_up/data/repository/signup_repository.dart';
+import 'package:shop/app/server/exceptions/auth_exceptions.dart';
 import 'package:shop/app/utils/pages/app_pages.dart';
-
 import '../../../../utils/mixins/loading_mixin.dart';
 
 class SignUpController extends GetxController with LoadingMixin {
@@ -79,7 +79,9 @@ class SignUpController extends GetxController with LoadingMixin {
         await executeWithLoading(() => _signupRepository.singUp(singupModel));
     errorOrEither.fold(
       (error) {
-        kErrorDialog(Get.context!, error.toString());
+        error is AuthExceptions && error.code == 'email-already-in-use'
+            ? emailError = error.message
+            : kErrorDialog(Get.context!, error.toString());
       },
       (either) {
         either.fold(

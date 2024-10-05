@@ -1,8 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fauth;
-import 'package:get/get.dart';
 import 'package:shop/app/initials/controllers.dart/auth_controller.dart';
-import 'package:shop/app/initials/controllers.dart/previously_viewed_controller.dart';
 import 'package:shop/app/initials/controllers.dart/user_controller.dart';
 import 'package:shop/app/modules/authentication/login/data/models/login_model.dart';
 import 'package:shop/app/server/exceptions/app_exceptions.dart';

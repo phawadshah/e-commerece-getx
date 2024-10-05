@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shop/app/common/widgets/empty.dart';
+import 'package:shop/app/common/widgets/error.dart';
 import 'package:shop/app/modules/home/presentation/widgets/all_products.dart';
 import 'package:shop/app/modules/home/presentation/widgets/category_products.dart';
 import 'package:shop/app/utils/helper.dart';
+import '../../../common/widgets/loading.dart';
+import '../../../utils/constants/enums.dart';
 import 'home_controller.dart';
 import 'widgets/category.dart';
 
@@ -22,11 +25,18 @@ class HomePage extends GetView<HomeController> {
           ),
         ],
       ),
-      body: _buildView(),
+      body: Obx(() => _buildView()),
     );
   }
 
   Widget _buildView() {
+    if (controller.hasError.value) {
+      return KErrorWidget(
+        error: controller.error.value,
+      );
+    } else if (controller.state == ControllerState.LOADING) {
+      return const KLoadingWidget();
+    }
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(

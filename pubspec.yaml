@@ -30,6 +30,7 @@ dependencies:
   logger: ^2.4.0
   restart_app: ^1.2.1
   flutter_phoenix: ^1.1.1
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:

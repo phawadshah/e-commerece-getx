@@ -56,15 +56,17 @@ class CartPage extends GetView<CartController> {
         ],
       );
     } else {
-      return Column(
-        children: [
-          CartItems(
-            products: controller.cartItems.value,
-            onRemovetap: controller.onRemoveTap,
-            onDecrementtap: controller.onDecrementtap,
-            onAddTap: controller.onAddTap,
-          ),
-        ],
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            CartItems(
+              products: controller.cartItems.value,
+              onRemovetap: controller.onRemoveTap,
+              onDecrementtap: controller.onDecrementtap,
+              onAddTap: controller.onAddTap,
+            ),
+          ],
+        ),
       );
     }
   }

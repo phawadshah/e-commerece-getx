@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:shop/app/utils/mixins/loading_mixin.dart';
-
 import '../../utils/pages/app_pages.dart';
 import '../../utils/services/internet_conectivity.dart';
 
@@ -24,7 +23,7 @@ class SplashController extends GetxController with LoadingMixin {
   }
 
   void _init() {
-    _internetConnectivity.isConnected
+    _internetConnectivity.isConnected.value
         ? Get.offNamed(Routes.BASE)
         : showNoInternetWidget(true);
   }

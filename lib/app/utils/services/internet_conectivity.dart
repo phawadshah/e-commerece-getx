@@ -4,7 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 class Internet extends GetxService {
   final RxBool _isConnected = false.obs;
-  bool get isConnected => _isConnected.value;
+  RxBool get isConnected => _isConnected.value.obs;
 
   StreamSubscription<List<ConnectivityResult>>? subscription;
 

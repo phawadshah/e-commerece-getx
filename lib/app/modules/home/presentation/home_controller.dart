@@ -1,22 +1,30 @@
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:shop/app/core/global/global.dart';
+import 'package:shop/app/utils/log/logger.dart';
 import 'package:shop/app/utils/services/configs/user_config.dart';
 import 'package:shop/app/utils/constants/api_endpoints.dart';
 import 'package:shop/app/utils/pages/app_pages.dart';
 
+import '../../../utils/mixins/loading_mixin.dart';
+import '../../../utils/services/internet_conectivity.dart';
 import '../../categories/data/models/category.dart';
 import '../data/models/product.dart';
 import '../data/repositories/home_repository.dart';
 
-class HomeController extends GetxController {
+class HomeController extends GetxController with LoadingMixin {
   final HomeRepository _homeRepository;
   final UserConfig _userConfig;
+  final Internet _internetConnectivity;
   HomeController({
     required HomeRepository homeRepository,
     required UserConfig userConfig,
+    required Internet internetConnectivity,
   })  : _homeRepository = homeRepository,
-        _userConfig = userConfig;
+        _userConfig = userConfig,
+        _internetConnectivity = internetConnectivity;
+
+  RxBool get isConnected => _internetConnectivity.isConnected;
 
   String title = 'Home';
   RxBool hasError = false.obs;
@@ -41,9 +49,20 @@ class HomeController extends GetxController {
   void onFavTap() => Get.toNamed(Routes.WISHLIST, id: Global.homeNavigationId);
 
   Future<void> _loadData() async {
-    await _fetchCategories();
-    await _fetchData();
-    await _fetchAllProducts();
+    KLogger.debug("Getting home data :: ${isConnected.value}");
+    !isConnected.value
+        ? [error('No Internet Connection'), hasError(true)]
+        : [
+            await _fetchCategories(),
+            await _fetchData(),
+            await _fetchAllProducts()
+          ];
+  }
+
+  void onRetry() async {
+    hasError(false);
+    error('');
+    await _loadData();
   }
 
   void onCategoryTap(CategoryModel category) {

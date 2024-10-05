@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 import 'package:shop/app/modules/search/data/models/search_product_model.dart';
 import 'package:shop/app/utils/services/local_storage_service.dart';
 

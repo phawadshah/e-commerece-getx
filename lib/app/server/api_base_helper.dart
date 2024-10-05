@@ -21,7 +21,7 @@ class ApiBaseHelper extends GetxService {
     } on http.ClientException catch (e) {
       throw ApiConnectionException(e.message);
     } catch (e) {
-      rethrow;
+      throw AppException(e.toString());
     }
     await _handleResponse(response);
     final responseJson = json.decode(response.body.toString());

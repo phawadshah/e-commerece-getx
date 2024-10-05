@@ -4,6 +4,7 @@ import 'package:shop/app/initials/controllers.dart/auth_controller.dart';
 import 'package:shop/app/initials/controllers.dart/user_controller.dart';
 import 'package:shop/app/modules/authentication/sign_up/data/model/singup_model.dart';
 import 'package:shop/app/server/exceptions/app_exceptions.dart';
+import '../../../../../utils/services/configs/user_config.dart';
 import '../../../data/models/user.dart';
 
 /* 
@@ -14,13 +15,17 @@ THIS REPO WILL ONLY BE INJECTED TO SIGNUP CONTROLLER
 class SignupRepository {
   final AuthController _authController;
   final UserController _userController;
+  final UserConfig _userConfig;
+
   SignupRepository({
     required AuthController authController,
     required UserController userController,
+    required UserConfig userConfig,
   })  : _authController = authController,
-        _userController = userController;
+        _userController = userController,
+        _userConfig = userConfig;
 
-  Future<Either<AppException, Either<AppException, bool>>> singUp(
+  Future<Either<dynamic, Either<AppException, bool>>> singUp(
     SingupModel user,
   ) async {
     try {
@@ -28,17 +33,19 @@ class SignupRepository {
       return Right(
           await registerUser(User.fromCredentials(response, user.name!)));
     } catch (e) {
-      return Left(AppException(e.toString()));
+      return Left(e);
     }
   }
 
   Future<Either<AppException, bool>> registerUser(User user) async {
     try {
-      if (await _userController.createNewUser(user)) {
-        _userController.user = user;
-        return const Right(true);
-      }
-      return const Right(false);
+      return Right(await _userController.createNewUser(user).then(
+        (value) async {
+          _userController.user = user;
+          await _userConfig.manageUserConfig();
+          return value;
+        },
+      ));
     } catch (e) {
       /* IF THE USER GETS AUTHENTICATED BUT CANNOT BE ADDED TO THE DATABASE
       THE USER WILL BE DELETED FROM THE AUTHENTICATION SERVICE TOO

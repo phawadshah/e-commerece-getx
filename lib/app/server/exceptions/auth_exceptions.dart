@@ -9,6 +9,8 @@ class AuthExceptions implements Exception {
   @override
   String toString() {
     switch (code) {
+      case 'network-request-failed':
+        return ErrorTexts.noInternetConnection;
       case 'invalid-credential':
         return ErrorTexts.invalidCredentials;
       case 'wrong-password':

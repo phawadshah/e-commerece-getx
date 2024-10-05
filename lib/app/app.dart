@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:shop/app/initials/bindings/app_bindings.dart';
 import 'package:shop/app/utils/pages/app_pages.dart';
@@ -9,13 +10,19 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      getPages: AppPages.pages,
-      initialRoute: Routes.INITIAL,
-      theme: AppTheme.lightThemedata,
-      darkTheme: AppTheme.darkThemedata,
-      themeMode: ThemeMode.light,
-      initialBinding: AppInitialBindings(),
-    );
+    return ScreenUtilInit(
+        designSize: const Size(428, 926),
+        minTextAdapt: true,
+        builder: (context, _) {
+          return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            getPages: AppPages.pages,
+            initialRoute: Routes.INITIAL,
+            initialBinding: AppInitialBindings(),
+            themeMode: ThemeMode.light,
+            theme: KAppTheme.light,
+            darkTheme: KAppTheme.dark,
+          );
+        });
   }
 }

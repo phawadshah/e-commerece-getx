@@ -17,14 +17,19 @@ class UserConfig extends GetxService {
   final AuthController _authController;
   final WishlistService _wishlistService;
   final CartService _cartService;
+  final LocalStorageService _localStorageService;
 
   UserConfig({
     required AuthController authController,
     required WishlistService wishlistService,
     required CartService cartService,
+    required LocalStorageService localStorageService,
   })  : _authController = authController,
         _wishlistService = wishlistService,
-        _cartService = cartService;
+        _cartService = cartService,
+        _localStorageService = localStorageService;
+
+  bool get isLoggedIn => _localStorageService.getBool(key: "");
 
   late String _uid;
   String get uid => _uid;
